@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "H8zNInPqap5+VK4VOBjBtQX78c0=",
+			"path": "github.com/cactus/go-statsd-client/statsd",
+			"revision": "ce77ca9ecdee1c3ffd097e32f9bb832825ccb203",
+			"revisionTime": "2017-08-31T18:00:57Z"
+		}
+	],
+	"rootPath": "github.com/cameronnewman/lib.statsd"
+}
