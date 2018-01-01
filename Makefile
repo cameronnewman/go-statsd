@@ -14,6 +14,13 @@ DASH:= -
 # replace . with -
 PROJECT= $(subst $(DOT),$(DASH),$(BINARY))
 
+.PHONY: tests
+tests: setup
+
+	docker run --rm --name=$(BUILD_IMAGE) -t -v $(PWD):/go/src/github.com/cameronnewman/$(BINARY) -w /go/src/github.com/cameronnewman/$(BINARY) $(BUILD_IMAGE) go test -v ./...
+	@echo "Completed tests"
+
+
 .PHONY: setup
 setup:
 
@@ -22,9 +29,3 @@ setup:
 
 	docker rmi -f $(BUILD_IMAGE)
 	docker build -t=$(BUILD_IMAGE) build/container/
-
-.PHONY: tests
-tests: setup
-
-	docker run --rm --name=$(BUILD_IMAGE) -t -v $(PWD):/go/src/github.com/cameronnewman/$(BINARY) -w /go/src/github.com/cameronnewman/$(BINARY) $(BUILD_IMAGE) go test -v ./...
-	@echo "Completed tests"
