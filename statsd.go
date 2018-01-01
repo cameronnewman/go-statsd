@@ -22,7 +22,7 @@ type Statsd struct {
 	sd sd.Statter
 }
 
-//New create new statsd client
+//New creates a statsd client instance
 func New(cfg *Config) (*Statsd, error) {
 	conn := fmt.Sprintf("%s:%d", cfg.StatsdHost, cfg.StatsdPort)
 
@@ -36,14 +36,14 @@ func New(cfg *Config) (*Statsd, error) {
 
 }
 
-//StatsCounter increase counter
+//StatsCounter increase counter for key
 func (stsd *Statsd) StatsCounter(key string, value int64) {
 	if stsd != nil && stsd.sd != nil {
 		stsd.sd.Inc(key, value, sampleRate)
 	}
 }
 
-//StatsGauge increase counter
+//StatsGauge gauge for key
 func (stsd *Statsd) StatsGauge(key string, value int64) {
 	if stsd != nil && stsd.sd != nil {
 		stsd.sd.Gauge(key, value, sampleRate)
@@ -57,14 +57,14 @@ func (stsd *Statsd) statsTimers(key string, value int64) {
 	}
 }
 
-//Timing measure the timing
+//Timing measure for key
 func (stsd *Statsd) Timing(key string, start time.Time) {
 	elapsed := time.Since(start)
 
 	stsd.statsTimers(key, elapsed.Nanoseconds()/1000000)
 }
 
-//TimingDuration measure the timing
+//TimingDuration measures duration for key
 func (stsd *Statsd) TimingDuration(key string, duration time.Duration) {
 	if stsd != nil && stsd.sd != nil {
 		stsd.sd.TimingDuration(key, duration, sampleRate)
