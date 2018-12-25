@@ -1,3 +1,3 @@
-FROM golang:1.9
+FROM golang:1.11.4
 
 WORKDIR /go/src/github.com/cameronnewman/$BINARY
