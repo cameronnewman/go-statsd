@@ -3,29 +3,19 @@
 SHA1         		:= $(shell git rev-parse --verify --short HEAD)
 MAJOR_VERSION		:= $(shell cat lib.json | sed -n 's/.*"major": "\(.*\)",/\1/p')
 MINOR_VERSION		:= $(shell cat lib.json | sed -n 's/.*"minor": "\(.*\)"/\1/p')
-INTERNAL_BUILD_ID	:= $(shell [ -z "${BUILD_ID}" ] && echo "local" || echo ${BUILD_ID})
-BINARY				:= $(shell cat lib.json | sed -n 's/.*"name": "\(.*\)",/\1/p')
+INTERNAL_BUILD_ID	:= $(shell [ -z "${TRAVIS_BUILD_NUMBER}" ] && echo "local" || echo ${TRAVIS_BUILD_NUMBER})
+BINARY				:= $(shell cat service.json | sed -n 's/.*"name": "\(.*\)",/\1/p')
 VERSION				:= $(shell echo "${MAJOR_VERSION}_${MINOR_VERSION}_${INTERNAL_BUILD_ID}_${SHA1}")
-BUILD_IMAGE			:= $(shell echo "lib-build")
+BUILD_IMAGE			:= $(shell echo "golang:1.11.4")
 PWD					:= $(shell pwd)
 
-DOT:= .
-DASH:= -
-# replace . with -
-PROJECT= $(subst $(DOT),$(DASH),$(BINARY))
+.DEFAULT_GOAL := test
 
-.PHONY: tests
-tests: setup
+.PHONY: test
+test:
+	@echo "Running Tests"
 
-	docker run --rm --name=$(BUILD_IMAGE) -t -v $(PWD):/go/src/github.com/cameronnewman/$(BINARY) -w /go/src/github.com/cameronnewman/$(BINARY) $(BUILD_IMAGE) go test -v ./...
+	docker run -e GO111MODULE=auto --rm -t -v $(PWD):/usr/src/myapp -w /usr/src/myapp $(BUILD_IMAGE) sh -c "go test -cover -v ./... -count=1"
 	@echo "Completed tests"
 
 
-.PHONY: setup
-setup:
-
-	@echo $(VERSION)
-	@echo $(BINARY)
-
-	docker rmi -f $(BUILD_IMAGE)
-	docker build -t=$(BUILD_IMAGE) build/container/
