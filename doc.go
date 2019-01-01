@@ -1,6 +1,6 @@
 /*
 
-Package statsd is simple statsd warpper lib
+Package statsd is simple statsd warpper.
 
 */
 package statsd
