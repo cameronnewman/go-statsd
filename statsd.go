@@ -9,64 +9,91 @@ import (
 
 const sampleRate = 1.0
 
-//Stats interface
-type Stats interface {
-	StatsCounter(key string, value int64)
-	StatsGauge(key string, value int64)
+//Metrics interface
+type Metrics interface {
+	Counter(key string, value int64)
+	Gauge(key string, value int64)
 	Timing(key string, start time.Time)
 	TimingDuration(key string, duration time.Duration)
 }
 
 //Statsd used to monitor and measure performance
 type Statsd struct {
-	sd sd.Statter
+	statsd sd.Statter
+}
+
+//Options for statsd
+type Options struct {
+	Host      string `json:"host"`
+	Port      int    `json:"port"`
+	Namespace string `json:"namespace"`
 }
 
 //New creates a statsd client instance
-func New(cfg *Config) (*Statsd, error) {
-	conn := fmt.Sprintf("%s:%d", cfg.StatsdHost, cfg.StatsdPort)
-
-	statsd := &Statsd{}
-	stats, err := sd.NewBufferedClient(conn, cfg.StatsdNamespace, 0, 0)
+func New(opt *Options) (*Statsd, error) {
+	conn := fmt.Sprintf("%s:%d", opt.Host, opt.Port)
+	statter, err := sd.NewClientWithConfig(&sd.ClientConfig{
+		Address: conn,
+		Prefix:  opt.Namespace,
+	})
 	if nil != err {
 		return nil, err
 	}
-	statsd.sd = stats
-	return statsd, nil
 
+	return &Statsd{
+		statsd: statter,
+	}, nil
 }
 
-//StatsCounter increase counter for key
-func (stsd *Statsd) StatsCounter(key string, value int64) {
-	if stsd != nil && stsd.sd != nil {
-		stsd.sd.Inc(key, value, sampleRate)
+//Counter increase counter for key
+func (s *Statsd) Counter(key string, value int64) error {
+	if s != nil && s.statsd != nil {
+		err := s.statsd.Inc(key, value, sampleRate)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
-//StatsGauge gauge for key
-func (stsd *Statsd) StatsGauge(key string, value int64) {
-	if stsd != nil && stsd.sd != nil {
-		stsd.sd.Gauge(key, value, sampleRate)
-
+//Gauge gauge for key
+func (s *Statsd) Gauge(key string, value int64) error {
+	if s != nil && s.statsd != nil {
+		err := s.statsd.Gauge(key, value, sampleRate)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
-func (stsd *Statsd) statsTimers(key string, value int64) {
-	if stsd != nil && stsd.sd != nil {
-		stsd.sd.Timing(key, value, sampleRate)
+func (s *Statsd) timers(key string, value int64) error {
+	if s != nil && s.statsd != nil {
+		err := s.statsd.Timing(key, value, sampleRate)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 //Timing measure for key
-func (stsd *Statsd) Timing(key string, start time.Time) {
+func (s *Statsd) Timing(key string, start time.Time) error {
 	elapsed := time.Since(start)
-
-	stsd.statsTimers(key, elapsed.Nanoseconds()/1000000)
+	err := s.timers(key, elapsed.Nanoseconds()/1000000)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //TimingDuration measures duration for key
-func (stsd *Statsd) TimingDuration(key string, duration time.Duration) {
-	if stsd != nil && stsd.sd != nil {
-		stsd.sd.TimingDuration(key, duration, sampleRate)
+func (s *Statsd) TimingDuration(key string, duration time.Duration) error {
+	if s != nil && s.statsd != nil {
+		err := s.statsd.TimingDuration(key, duration, sampleRate)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }

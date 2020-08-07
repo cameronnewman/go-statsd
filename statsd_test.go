@@ -18,7 +18,7 @@ func TestNew(t *testing.T) {
 		want    *Statsd
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -34,102 +34,142 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestStatsd_StatsCounter(t *testing.T) {
+func TestStatsd_Counter(t *testing.T) {
 	type fields struct {
-		sd sd.Statter
+		statsd sd.Statter
 	}
 	type args struct {
 		key   string
 		value int64
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			stsd := &Statsd{
-				sd: tt.fields.sd,
+			s := &Statsd{
+				statsd: tt.fields.statsd,
 			}
-			stsd.StatsCounter(tt.args.key, tt.args.value)
+			if err := s.Counter(tt.args.key, tt.args.value); (err != nil) != tt.wantErr {
+				t.Errorf("Statsd.Counter() error = %v, wantErr %v", err, tt.wantErr)
+			}
 		})
 	}
 }
 
-func TestStatsd_StatsGauge(t *testing.T) {
+func TestStatsd_Gauge(t *testing.T) {
 	type fields struct {
-		sd sd.Statter
+		statsd sd.Statter
 	}
 	type args struct {
 		key   string
 		value int64
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			stsd := &Statsd{
-				sd: tt.fields.sd,
+			s := &Statsd{
+				statsd: tt.fields.statsd,
 			}
-			stsd.StatsGauge(tt.args.key, tt.args.value)
+			if err := s.Gauge(tt.args.key, tt.args.value); (err != nil) != tt.wantErr {
+				t.Errorf("Statsd.Gauge() error = %v, wantErr %v", err, tt.wantErr)
+			}
 		})
 	}
 }
 
-func TestStatsd_statsTimers(t *testing.T) {
+func TestStatsd_timers(t *testing.T) {
 	type fields struct {
-		sd sd.Statter
+		statsd sd.Statter
 	}
 	type args struct {
 		key   string
 		value int64
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			stsd := &Statsd{
-				sd: tt.fields.sd,
+			s := &Statsd{
+				statsd: tt.fields.statsd,
 			}
-			stsd.statsTimers(tt.args.key, tt.args.value)
+			if err := s.timers(tt.args.key, tt.args.value); (err != nil) != tt.wantErr {
+				t.Errorf("Statsd.timers() error = %v, wantErr %v", err, tt.wantErr)
+			}
 		})
 	}
 }
 
 func TestStatsd_Timing(t *testing.T) {
 	type fields struct {
-		sd sd.Statter
+		statsd sd.Statter
 	}
 	type args struct {
 		key   string
 		start time.Time
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			stsd := &Statsd{
-				sd: tt.fields.sd,
+			s := &Statsd{
+				statsd: tt.fields.statsd,
 			}
-			stsd.Timing(tt.args.key, tt.args.start)
+			if err := s.Timing(tt.args.key, tt.args.start); (err != nil) != tt.wantErr {
+				t.Errorf("Statsd.Timing() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestStatsd_TimingDuration(t *testing.T) {
+	type fields struct {
+		statsd sd.Statter
+	}
+	type args struct {
+		key      string
+		duration time.Duration
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := &Statsd{
+				statsd: tt.fields.statsd,
+			}
+			if err := s.TimingDuration(tt.args.key, tt.args.duration); (err != nil) != tt.wantErr {
+				t.Errorf("Statsd.TimingDuration() error = %v, wantErr %v", err, tt.wantErr)
+			}
 		})
 	}
 }

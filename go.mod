@@ -1,5 +1,5 @@
 module github.com/cameronnewman/lib.statsd
 
-// go: no requirements found in vendor/vendor.json
+go 1.14
 
-require github.com/cactus/go-statsd-client/statsd v0.0.0-20180911231738-23713bd9ff66
+require github.com/cactus/go-statsd-client/statsd v0.0.0-20200728222731-a2baea3bbfc6

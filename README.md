@@ -1,50 +1,41 @@
 # lib.statsd
+
 [![Build Status](https://travis-ci.org/cameronnewman/lib.statsd.svg?branch=master)](https://travis-ci.org/cameronnewman/lib.statsd) [![GoDoc](https://godoc.org/github.com/cameronnewman/lib.statsd?status.svg)](http://godoc.org/github.com/cameronnewman/lib.statsd) [![Report card](https://goreportcard.com/badge/github.com/cameronnewman/lib.statsd)](https://goreportcard.com/report/github.com/cameronnewman/lib.statsd)
 
+## Purpose ##
 
 Simple Statsd implementation
 
-## Dev guide
+## Usage
 
-### 1. [Install Go](https://golang.org/doc/install)
+```
+package main
 
-### 2. Set your $GOPATH variable, [read more here](https://github.com/golang/go/wiki/SettingGOPATH)
+import (
+	statsd "github.com/cameronnewman/lib.statsd"
+)
 
-$GOPATH should point to a directory where you store ( or intend to store) all of your go projects.
+func main() {
 
-```sh
-export GOPATH=$HOME/projects/all-the-go-projects
+	metrics, err := statsd.New(&statsd.Options{
+		Host:      "127.0.0.1",
+		Port:      9191,
+		Namespace: "myapp",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	err = metrics.Counter("Starting", 1)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
-### 3. Install govendor.
 
-We are using [`govendor`](https://github.com/kardianos/govendor). Install it:
+## Issues
+* None
 
-```sh
-go get -u github.com/kardianos/govendor/...
-```
-
-To get a dependency into a vendor directory:
-
-```sh
-govendor fetch github.com/cameronnewman/lib.statsd/
-```
-
-To synch dependencies with the vendor directory:
-
-```sh
-govendor update +external
-```
-
-### 5. Clone the repo with `go get` command
-
-```sh
-cd $GOPATH
-go get github.com/cameronnewman/lib.statsd/...
-```
-
-## Tests
-
-```sh
-make test
-```
+## License
+MIT Licensed
