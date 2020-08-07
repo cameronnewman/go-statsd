@@ -1,6 +1,8 @@
-# lib.statsd
+# go-statsd
 
-[![Build Status](https://travis-ci.org/cameronnewman/lib.statsd.svg?branch=master)](https://travis-ci.org/cameronnewman/lib.statsd) [![GoDoc](https://godoc.org/github.com/cameronnewman/lib.statsd?status.svg)](http://godoc.org/github.com/cameronnewman/lib.statsd) [![Report card](https://goreportcard.com/badge/github.com/cameronnewman/lib.statsd)](https://goreportcard.com/report/github.com/cameronnewman/lib.statsd)
+[![GoDoc](https://godoc.org/github.com/cameronnewman/lib.statsd?status.svg)](http://godoc.org/github.com/cameronnewman/lib.statsd) 
+[![Report card](https://goreportcard.com/badge/github.com/cameronnewman/lib.statsd)](https://goreportcard.com/report/github.com/cameronnewman/lib.statsd)
+![Build Status](https://github.com/cameronnewman/go-statsd/workflows/Continuous%20Integration/badge.svg)
 
 ## Purpose ##
 
