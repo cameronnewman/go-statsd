@@ -1,4 +1,4 @@
-module github.com/cameronnewman/lib.statsd
+module github.com/cameronnewman/go-statsd
 
 go 1.14
 

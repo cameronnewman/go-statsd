@@ -12,7 +12,7 @@ Simple Statsd implementation
 package main
 
 import (
-	statsd "github.com/cameronnewman/lib.statsd"
+	statsd "github.com/cameronnewman/go-statsd"
 )
 
 func main() {
